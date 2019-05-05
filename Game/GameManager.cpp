@@ -36,6 +36,8 @@ GameManager::GameManager()
 	}
 
 	mTimer = Timer::Instance();
+
+	
 }
 
 
