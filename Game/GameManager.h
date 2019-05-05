@@ -2,6 +2,7 @@
 #define _GAMEMANAGER_H
 #include "Graphics.h"
 #include "Timer.h"
+#include "GameObject.h"
 
 class GameManager
 {
@@ -34,6 +35,9 @@ private:
 	Timer* mTimer;
 	// catch the events of the user
 	SDL_Event mEvents;
+
+	GameObject* mParent;
+	GameObject* mChild;
 
 
 };
