@@ -240,3 +240,7 @@ ModelManifest.xml
 
 # FAKE - F# Make
 .fake/
+
+GameObject.h
+MathHelper.h
+GameObject.cpp
