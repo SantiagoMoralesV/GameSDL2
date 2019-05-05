@@ -17,7 +17,14 @@ public:
 	void Rotation(float rotation);
 	float Rotation(SPACE space = world);
 
-	void Active();
+	void Active(bool active);
+	bool Active();
+
+	void Parent(GameObject* parent);
+	GameObject* Parent();
+
+	virtual void Update();
+	virtual void Render();
 
 private:
 
@@ -27,8 +34,7 @@ private:
 	bool mActive;
 	GameObject* mParent;
 
-	virtual void Update();
-	virtual void Render();
+	
 };
 
 #endif 
