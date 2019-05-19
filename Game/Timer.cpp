@@ -1,15 +1,19 @@
+// Timer.cpp
+// Used to keep track of the time between each reset
+// A reset is usually called after each frame
+
 #include "Timer.h"
 
+// Initializing sInstance to NULL
 Timer* Timer::sInstance = NULL;
 
 Timer * Timer::Instance()
 {
-	// if instance was not created before
+	//Create a new instance of Timer if no instance was created before
 	if (sInstance == NULL) 
-		// create new instance
+		
 		sInstance = new Timer();
 	
-	// return instance
 	return sInstance;
 }
 void Timer::Release()
@@ -22,17 +26,14 @@ void Timer::Release()
 
 void Timer::Reset()
 {
-	// number of milliseconds since the library initialize
+
 	mStartTicks = SDL_GetTicks();
-	// set elapsed ticks to zero
 	mElapsedTicks = 0;
-	// set DeltaTime to 0
 	mDeltaTime = 0.0f;
 }
 
 float Timer::DeltaTime()
 {
-	// returns DeltaTime
 	return mDeltaTime;
 }
 
@@ -43,20 +44,20 @@ void Timer::TimeScale(float t)
 
 float Timer::TimeScale()
 {
-	//returns Time scale
 	return mTimeScale;
 }
 
 void Timer::Update()
 {
-	// the ticks that happened between the last reset and the current time
+
 	mElapsedTicks = SDL_GetTicks() - mStartTicks;
-	// since Ticks are in milliseconds converted back to float
+	// Converting milliseconds to seconds
 	mDeltaTime = mElapsedTicks * 0.001f;
 }
 
 Timer::Timer()
 {
+	// Using Reset to initialize all the values beside mTimeScale
 	Reset();
 	mTimeScale = 1.0f;
 }

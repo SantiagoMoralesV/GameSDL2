@@ -1,11 +1,16 @@
+// GameManager.h                                                       
+// Singleton                                                          
+// Used to initialize and release                    
+// Contains the game loop as well as the Update and Render functions   
+// Used to make sure all functions are called in the correct order    
 #include "GameManager.h"
 
-
+//Initializing to NULL
 GameManager* GameManager::sInstance = NULL;
 
 GameManager * GameManager::Instance()
 {
-	// if instance was not created before
+	//Create a new instance if no instance was created before
 	if (sInstance == NULL) 
 		// create new instance
 		sInstance = new GameManager();
@@ -19,15 +24,14 @@ void GameManager::Release()
 	// delete instance and set it to NULL
 	delete sInstance;
 	sInstance = NULL;
-	
 }
 
 
 GameManager::GameManager()
 {
-	// start mQuit as false
 	mQuit = false;
-	// Initialize our graphics
+
+	//Initialize SDL
 	mGraphics = Graphics::Instance();
 
 	if (!Graphics::Initialized()) {
@@ -35,21 +39,86 @@ GameManager::GameManager()
 		mQuit = true;
 	}
 
-	mTimer = Timer::Instance();
+	mAssetMgr = AssetManager::Instance();//Initialize AssetManager
+	mInput = Input::Instance();//Initialize Input
+	mTimer = Timer::Instance();//Initialize Timer
 
-	
+	mPlayer = new Player();// Creating new player
+	mPlayer->Pos(Vector2(400, 550));// Position of the player
+	mPlayer->Active(true);// Player is active
+	mPlayer->Visible(true);// Player is visible
+	mPlayerHit = false;// PlayerHit set to false
+
+	mEnemy = new Enemy();// Creating new enemy
+	mEnemy->Pos(Vector2(400, 50)); // Position of the player
+	mEnemy->Active(true);// Enemy is Active
+	mEnemy->Visible(true);// Enemy is Visible
+	mEnemyHit = false; // EnemyHit set to false
 }
 
 
 GameManager::~GameManager()
 {
-	// releases singleton instance
-	Graphics::Release();
-	// sets Graphics to NULL
-	mGraphics = NULL;
+	
+	AssetManager::Release();// releases AssetManager instance
+	mAssetMgr = NULL;// sets AssetManager to NULL
+	
+	Graphics::Release();// releases Graphics instance
+	mGraphics = NULL;// sets Graphics to NULL
+	
+	Input::Release();// releases Input instance
+	mInput = NULL;// sets mInput to NULL
 
-	Timer::Release();
-	mTimer = NULL;
+	Timer::Release();// releases Timer instance
+	mTimer = NULL;// sets mInput to NULL
+
+	delete mPlayer;// releases Player instance
+	mPlayer = NULL;// sets mPlayer to Null
+
+	delete mEnemy;// releases Player instance
+	mEnemy = NULL;// sets mPlayer to Null
+}
+
+void GameManager::EarlyUpdate() {
+	//Updating the input state before any other updates are run to make sure the Input check is accurate
+	mInput->Update();
+}
+
+void GameManager::Update() {
+
+	//GameObject Updates happen here
+	if (Input::Instance()->KeyPressed(SDL_SCANCODE_X)) {
+		
+		mPlayer->WasHit();
+		mPlayerHit = true;
+		mPlayer->Active(false);
+	}
+	else {
+
+		mInput->Update();
+		mPlayer->Update();
+		mPlayer->Active(true);
+		mEnemy->Update();
+		mEnemy->Active(true);
+	}
+}
+
+void GameManager::LateUpdate()
+{
+	mInput->UpdatePrevInput();
+	mTimer->Reset();
+}
+
+void GameManager::Render()
+{
+	//Clears the last frame's render from the back buffer
+	mGraphics->ClearBackBuffer();
+	// Render Player
+	mPlayer->Render();
+	// Renders Enemy
+	mEnemy->Render();
+	//Renders the current frame
+	mGraphics->Render();
 }
 
 void GameManager::Run()
@@ -59,19 +128,20 @@ void GameManager::Run()
 		mTimer->Update();
 
 		while (SDL_PollEvent(&mEvents) != 0) {
-
+			//Checks if the user quit the game
 			if (mEvents.type == SDL_QUIT) {
 
 				mQuit = true;
 			}
 		}
+		//Limits the frame rate to FRAME_RATE
 		if (mTimer->DeltaTime() >= 1.0f / FRAME_RATE) {
-		
-			std::cout << "DeltaTime:" << mTimer->DeltaTime() << std::endl;
 
-			mGraphics->Render();
+			EarlyUpdate();
+			Update();
+			LateUpdate();
+			Render();
 
-			mTimer->Reset();
 		}
 	}
 }

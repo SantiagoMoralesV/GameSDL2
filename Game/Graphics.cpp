@@ -1,12 +1,17 @@
+// Graphics.cpp
+// Handles the initialization of the graphics related to SDL libraries
+// and their release
+// Handles texture as well
 #include "Graphics.h"
 
-// Initialize the two static variables
+// Initialize to NULL
 Graphics* Graphics::sInstance = NULL;
+//Initializing to false
 bool Graphics::sInitialized = false;
 
 Graphics * Graphics::Instance()
 {
-	// if instance was not created before
+	//Create a new instance if no instance was created before
 	if (sInstance == NULL) {
 		// create new instance
 		sInstance = new Graphics();
@@ -30,10 +35,48 @@ bool Graphics::Initialized()
 	// returns initiliazed variable
 	return sInitialized;
 }
+SDL_Texture * Graphics::LoadTexture(std::string path)
+{
+
+	SDL_Texture* tex = NULL;
+	//load the image onto a surface
+	SDL_Surface* surface = IMG_Load(path.c_str());
+
+	//Handling image loading errors
+	if (surface == NULL) {
+
+		std::cout << "Image Load Error " << path.c_str()  << IMG_GetError() << std::endl;
+		return tex;
+	}
+	//Converting the surface into a texture to be able to render it using the renderer
+	tex = SDL_CreateTextureFromSurface(mRenderer, surface);
+
+	//Handling texture creation errors
+	if (tex == NULL) {
+
+		std::cout << "Image Load Error " << SDL_GetError() << std::endl;
+		return tex;
+	}
+
+	//free the surface since only the texture is needed
+	SDL_FreeSurface(surface);
+
+	return tex;
+
+
+}
+void Graphics::ClearBackBuffer()
+{
+	SDL_RenderClear(mRenderer);
+}
+void Graphics::DrawTexture(SDL_Texture * tex, SDL_Rect* clip, SDL_Rect* rend)
+{
+	SDL_RenderCopy(mRenderer, tex, clip, rend);
+
+
+}
 Graphics::Graphics()
 {
-	// variable not initialized yet
-	mBackBuffer = NULL;
 
 	// sInitialized variable is going to equal to the Init function
 	sInitialized = Init();
@@ -46,12 +89,21 @@ Graphics::~Graphics()
 	SDL_DestroyWindow(sdlWindow);
 	// set SDl window to NULL
 	sdlWindow = NULL;
-	// call SDL function to quit SDL
+
+	// Destroying renderer and setting it to Null
+	SDL_DestroyRenderer(mRenderer);
+	mRenderer = NULL;
+	// quit the image
+	IMG_Quit();
+
+	// Closing all open SDL graphic libraries
 	SDL_Quit();
+	IMG_Quit();
 }
 
 bool Graphics::Init()
 {
+	//Initialize SDL everything and handling initialization errors
 	if ((SDL_INIT_EVERYTHING) < 0 ){
 
 		// print a failed message on to the console window
@@ -59,31 +111,50 @@ bool Graphics::Init()
 		return false;
 	}
 	
-	// create the SDL window
-	sdlWindow = SDL_CreateWindow("SDL Game", 
+	// create the window
+	sdlWindow = SDL_CreateWindow(WINDOW_TITLE, 
 											SDL_WINDOWPOS_UNDEFINED, 
 											SDL_WINDOWPOS_UNDEFINED, 
 											SCREEN_WIDTH,
 											SCREEN_HEIGHT, 
 											SDL_WINDOW_SHOWN);
 
-	// if something failed while creating the SDL window
+	// Handling window creation errors
 	if (sdlWindow == NULL) {
-		// print a failed message on to the console window
+		
 		std::cout << "Create Window - Failed" << SDL_GetError() << std::endl;
 		return false;
 	}
 
-	mBackBuffer = SDL_GetWindowSurface(sdlWindow);
-	
+	//Creating the renderer
+	mRenderer = SDL_CreateRenderer(sdlWindow, -1, SDL_RENDERER_ACCELERATED);
+
+	// Handling renderer creation errors
+	if (mRenderer == NULL) {
+
+		std::cout << "Renderer Creation Error " << SDL_GetError() << std::endl;
+		return false;
+	}
+
+	// Setting the renderers clear color to white
+	SDL_SetRenderDrawColor(mRenderer, 0, 0, 0, 0);
+
+	//Initializing the SDL_image library and handling initialization errors
+	int flags = IMG_INIT_PNG;
+	if (!(IMG_Init(flags) & flags)) {
+
+		std::cout << "IMG Initialization Error " << IMG_GetError() << std::endl;
+		return false;
+	}
+
+	// return true if no errors occurred during initialization
 	return true;
 }
 
 
 void Graphics::Render()
 {
-	// it refreshes the SDL window
-	SDL_UpdateWindowSurface(sdlWindow);
+	SDL_RenderPresent(mRenderer);
 }
 
 

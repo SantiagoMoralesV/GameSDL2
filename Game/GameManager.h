@@ -1,44 +1,69 @@
+// GameManager.h                                                       
+// Singleton                                                          
+// Used to initialize and release                    
+// Contains the game loop as well as the Update and Render functions   
+// Used to make sure all functions are called in the correct order     
 #ifndef _GAMEMANAGER_H
 #define _GAMEMANAGER_H
-#include "Graphics.h"
-#include "Timer.h"
-#include "GameObject.h"
+#include "Player.h"
+#include "Enemy.h"
 
 class GameManager
 {
 public:
 	
-	// it returns instance
+	//Returns a pointer to the class instance 
 	static GameManager* Instance();
-	// clear any static memory allocation
+	//Releases the class instance and sets it back to NULL 
+	//Is called when the game is closed
 	static void Release();
-	// loop keeps game running
+	//Contains the game loop, is called once in the main function  
 	void Run();
 
 
 private:
 
-	GameManager();
-	~GameManager();
+	GameManager(); // Contructor is private so that Instance() must be used to get an instance when needed  
+	~GameManager(); // Destructor is private so that the instance can only be destroyed using Release()  
 
-	// initiliaze instance
+	// Needed to make GameManager a singleton class
 	static GameManager* sInstance;
 
-	// variable for the frame rate
-	const int  FRAME_RATE = 60;
+	// The target frame rate of the game
+	const int  FRAME_RATE = 120;
 
-
+	//Used to exit the game loop
 	bool mQuit;
-	// Graphics pointer which will call mGraphics
+	//List of Graphics/Assets/Input to be initialized and released
 	Graphics* mGraphics;
-	// variable pointing Timer
+	AssetManager* mAssetMgr;
+	Input* mInput;
+
+	// Used to limit the frame rate
 	Timer* mTimer;
-	// catch the events of the user
+	// Used to catch the event when the user exits the game
 	SDL_Event mEvents;
+	// Points texture
+	Animation* mAnim;
+	Texture* mTex;
+	Player* mPlayer;
+	Enemy* mEnemy;
 
-	GameObject* mParent;
-	GameObject* mChild;
+	//Is called before Update, and is used for things that need to be updated first   
+	//    for example: updating input state 
+	void EarlyUpdate();
+	//Used to update entities, all transformations are to be done in this functions 
+	void Update();
+	//Is called after Update and is used for things that need to be updated last    
+	void LateUpdate();
+	// Returns animation on the player
+	bool mPlayerHit;
+	// Returns animation on the Enemy 
+	bool mEnemyHit;
 
+	//Clears the back buffer, and then is used to render all game entities  
+	//Is called after Late Update   
+	void Render();
 
 };
 
