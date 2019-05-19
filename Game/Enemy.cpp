@@ -50,12 +50,12 @@ Enemy::~Enemy()
 
 void Enemy::HandleMovement() {
 
-	if (mInput->KeyDown(SDL_SCANCODE_A)) {
+	if (mInput->KeyDown(SDL_SCANCODE_D)) {
 
 
 		Translate(VEC2_RIGHT*mMoveSpeed*mTimer->DeltaTime(), world);
 	}
-	else if (mInput->KeyDown(SDL_SCANCODE_D)) {
+	else if (mInput->KeyDown(SDL_SCANCODE_A)) {
 
 		Translate(-VEC2_RIGHT*mMoveSpeed*mTimer->DeltaTime(), world);
 	}
