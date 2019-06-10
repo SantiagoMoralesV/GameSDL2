@@ -7,6 +7,7 @@
 #define _GAMEMANAGER_H
 #include "Player.h"
 #include "Enemy.h"
+#include "AudioManager.h"
 
 class GameManager
 {
@@ -38,6 +39,7 @@ private:
 	Graphics* mGraphics;
 	AssetManager* mAssetMgr;
 	Input* mInput;
+	AudioManager* mAudioMgr;
 
 	// Used to limit the frame rate
 	Timer* mTimer;

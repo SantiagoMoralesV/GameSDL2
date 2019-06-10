@@ -41,7 +41,12 @@ GameManager::GameManager()
 
 	mAssetMgr = AssetManager::Instance();//Initialize AssetManager
 	mInput = Input::Instance();//Initialize Input
+	mAudioMgr = AudioManager::Instance();
+
 	mTimer = Timer::Instance();//Initialize Timer
+
+	mTex = new Texture("Hello World", "kenvector_future.ttf", 25, { 200, 0, 0 });
+	mTex->Pos(Vector2(400, 200));
 
 	mPlayer = new Player();// Creating new player
 	mPlayer->Pos(Vector2(400, 550));// Position of the player
@@ -59,6 +64,8 @@ GameManager::GameManager()
 
 GameManager::~GameManager()
 {
+	AudioManager::Release();
+	mAudioMgr = NULL;
 	
 	AssetManager::Release();// releases AssetManager instance
 	mAssetMgr = NULL;// sets AssetManager to NULL
@@ -92,6 +99,8 @@ void GameManager::Update() {
 		mPlayer->WasHit();
 		mPlayerHit = true;
 		mPlayer->Active(false);
+		mAudioMgr->PlaySFX("sfx_laser1.ogg");// plays only once
+		mAudioMgr->PlayMusic("Audio.mp3");//continues playing music
 	}
 	else {
 
@@ -113,6 +122,8 @@ void GameManager::Render()
 {
 	//Clears the last frame's render from the back buffer
 	mGraphics->ClearBackBuffer();
+
+	mTex->Render();
 	// Render Player
 	mPlayer->Render();
 	// Renders Enemy

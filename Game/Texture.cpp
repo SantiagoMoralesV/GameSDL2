@@ -42,6 +42,24 @@ Texture::Texture(std::string filename, int x, int y, int w, int h)
 
 }
 
+Texture::Texture(std::string text, std::string fontPath, int size, SDL_Color color)
+{
+	mGraphics = Graphics::Instance();
+
+	//Loads the texture from the AssetManager to avoid loading textures more than once
+	mTex = AssetManager::Instance()->GetText(text, fontPath, size, color);
+
+	//Clipped is false since the image is not loaded from a spritesheet
+	mClipped = false;
+
+	//Gets the Width and Height of the texture
+	SDL_QueryTexture(mTex, NULL, NULL, &mWidth, &mHeight);
+
+	mRenderRect.w = mWidth;
+	mRenderRect.h = mHeight;
+
+}
+
 Texture::~Texture()
 {
 	mTex = NULL;

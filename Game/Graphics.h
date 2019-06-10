@@ -10,6 +10,7 @@
 #include <iostream>
 #include <string>
 #include <SDL_image.h>
+#include <SDL_ttf.h>
 
 
 class Graphics
@@ -35,6 +36,8 @@ public:
 
 	// Loads a texture from file using the given path
 	SDL_Texture* LoadTexture(std::string path);
+
+	SDL_Texture* CreateTextTexture(TTF_Font*  font, std::string text, SDL_Color color);
 
 	// Clears all rendered textures from the back buffer
 	// usually used at the begining of the frame's render

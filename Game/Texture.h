@@ -19,6 +19,10 @@ public:
 	//w - The width of the clipped sprite
 	//h - The height of the clipped sprite
 	Texture(std::string filename, int x, int y, int w, int h);
+	//Converts the given text into a texture to be rendered
+	//size - The size of the text to be rendered
+	//color - The color of the text to be rendered
+	Texture(std::string text, std::string fontPath, int size, SDL_Color color);
 	~Texture();
 	//Called to render the texture to the screen
 	virtual void Render();

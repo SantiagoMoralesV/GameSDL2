@@ -63,8 +63,35 @@ SDL_Texture * Graphics::LoadTexture(std::string path)
 
 	return tex;
 
+}
+
+SDL_Texture* Graphics::CreateTextTexture(TTF_Font* font, std::string text, SDL_Color color) {
+
+	//Render the text onto a surface using the provided font and color
+	SDL_Surface* surface = TTF_RenderText_Solid(font, text.c_str(), color);
+	//Handling font rendering errors
+	if (surface == NULL) {
+
+		std::cout << "Text Render Error: " << TTF_GetError() << std::endl;
+		return NULL;
+	}
+
+	//Converting the surface into a texture to be able to render it using the renderer
+	SDL_Texture* tex = SDL_CreateTextureFromSurface(mRenderer, surface);
+	//Handle texture creation errors
+	if (tex == NULL) {
+
+		std::cout << "Text Texture Creation Error" << SDL_GetError() << std::endl;
+		return NULL;
+	}
+
+	//free the surface since only the texture is needed
+	SDL_FreeSurface(surface);
+
+	return tex; 
 
 }
+
 void Graphics::ClearBackBuffer()
 {
 	SDL_RenderClear(mRenderer);
@@ -93,6 +120,8 @@ Graphics::~Graphics()
 	// Destroying renderer and setting it to Null
 	SDL_DestroyRenderer(mRenderer);
 	mRenderer = NULL;
+
+	TTF_Quit();
 	// quit the image
 	IMG_Quit();
 
@@ -104,7 +133,7 @@ Graphics::~Graphics()
 bool Graphics::Init()
 {
 	//Initialize SDL everything and handling initialization errors
-	if ((SDL_INIT_EVERYTHING) < 0 ){
+	if ((SDL_INIT_EVERYTHING | SDL_INIT_AUDIO) < 0 ){ 
 
 		// print a failed message on to the console window
 		std::cout << "Initialize SDL - Failed" << SDL_GetError() << std::endl;
@@ -144,6 +173,12 @@ bool Graphics::Init()
 	if (!(IMG_Init(flags) & flags)) {
 
 		std::cout << "IMG Initialization Error " << IMG_GetError() << std::endl;
+		return false;
+	}
+
+	if(TTF_Init() == -1) {
+
+		std::cout << "TTF initialization error " << TTF_GetError() << std::endl;
 		return false;
 	}
 
