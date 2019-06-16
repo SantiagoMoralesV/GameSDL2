@@ -65,15 +65,30 @@ Texture::~Texture()
 	mTex = NULL;
 	mGraphics = NULL;
 }
+Vector2 Texture::ScaledDimensions() {
+
+	// gets the scaled dimension of the texture
+	Vector2 scaledDimensions = Scale();
+	scaledDimensions.x *= mWidth;
+	scaledDimensions.y *= mHeight;
+
+	return scaledDimensions;
+}
 
 void Texture::Render()
 {
 	Vector2 pos = Pos(world);
+	Vector2 scale = Scale(world);
+
 	//Centers the texture on the texture's world position so that its position is not the top left corner
-	mRenderRect.x = (int)(pos.x - mWidth*0.5f);
-	mRenderRect.y = (int)(pos.y - mHeight*0.5f);
+	mRenderRect.x = (int)(pos.x - mWidth*scale.x*0.5f);
+	mRenderRect.y = (int)(pos.y - mHeight*scale.y*0.5f);
+
+	//Scales the width and height according to the scale of the GameEntity
+	mRenderRect.w = (int)(mWidth * scale.x);
+	mRenderRect.h = (int)(mHeight * scale.y);
 
 	//if image is clipped  we render rectangle if not its NULL
-	mGraphics->DrawTexture(mTex, (mClipped) ? &mClipRect : NULL,  &mRenderRect);
+	mGraphics->DrawTexture(mTex, (mClipped) ? &mClipRect : NULL,  &mRenderRect, Rotation(world));
 
 }

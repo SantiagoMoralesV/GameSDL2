@@ -5,137 +5,117 @@
 // Used to make sure all functions are called in the correct order    
 #include "GameManager.h"
 
-//Initializing to NULL
 GameManager* GameManager::sInstance = NULL;
 
-GameManager * GameManager::Instance()
-{
+GameManager* GameManager::Instance() {
+
 	//Create a new instance if no instance was created before
-	if (sInstance == NULL) 
-		// create new instance
+	if (sInstance == NULL)
 		sInstance = new GameManager();
-	
-	// return instance
+
 	return sInstance;
 }
 
-void GameManager::Release()
-{
-	// delete instance and set it to NULL
+void GameManager::Release() {
+
 	delete sInstance;
 	sInstance = NULL;
 }
 
+GameManager::GameManager() {
 
-GameManager::GameManager()
-{
 	mQuit = false;
 
 	//Initialize SDL
 	mGraphics = Graphics::Instance();
 
-	if (!Graphics::Initialized()) {
-		// exit game loop and exit program
+	// Quits the game if SDL fails to initialize
+	if (!Graphics::Initialized())
 		mQuit = true;
-	}
 
-	mAssetMgr = AssetManager::Instance();//Initialize AssetManager
-	mInput = Input::Instance();//Initialize Input
+
+	//Initialize AssetManager
+	mAssetMgr = AssetManager::Instance();
+
+	//Initialize InputManager
+	mInput = Input::Instance();
+
+	//Initialize AudioManager
 	mAudioMgr = AudioManager::Instance();
 
-	mTimer = Timer::Instance();//Initialize Timer
+	//Initialize Timer
+	mTimer = Timer::Instance();
 
-	mTex = new Texture("Hello World", "kenvector_future.ttf", 25, { 200, 0, 0 });
-	mTex->Pos(Vector2(400, 200));
-
-	mPlayer = new Player();// Creating new player
-	mPlayer->Pos(Vector2(400, 550));// Position of the player
-	mPlayer->Active(true);// Player is active
-	mPlayer->Visible(true);// Player is visible
-	mPlayerHit = false;// PlayerHit set to false
-
-	mEnemy = new Enemy();// Creating new enemy
-	mEnemy->Pos(Vector2(400, 50)); // Position of the player
-	mEnemy->Active(true);// Enemy is Active
-	mEnemy->Visible(true);// Enemy is Visible
-	mEnemyHit = false; // EnemyHit set to false
+	mScreenMgr = ScreenManager::Instance();
+	
 }
 
+GameManager::~GameManager() {
 
-GameManager::~GameManager()
-{
+	ScreenManager::Release();
+	mScreenMgr = NULL;
+
 	AudioManager::Release();
 	mAudioMgr = NULL;
-	
-	AssetManager::Release();// releases AssetManager instance
-	mAssetMgr = NULL;// sets AssetManager to NULL
-	
-	Graphics::Release();// releases Graphics instance
-	mGraphics = NULL;// sets Graphics to NULL
-	
-	Input::Release();// releases Input instance
-	mInput = NULL;// sets mInput to NULL
 
-	Timer::Release();// releases Timer instance
-	mTimer = NULL;// sets mInput to NULL
+	AssetManager::Release();
+	mAssetMgr = NULL;
 
-	delete mPlayer;// releases Player instance
-	mPlayer = NULL;// sets mPlayer to Null
+	Graphics::Release();
+	mGraphics = NULL;
 
-	delete mEnemy;// releases Player instance
-	mEnemy = NULL;// sets mPlayer to Null
+	Input::Release();
+	mInput = NULL;
+
+	Timer::Release();
+	mTimer = NULL;
+
 }
 
 void GameManager::EarlyUpdate() {
+
 	//Updating the input state before any other updates are run to make sure the Input check is accurate
 	mInput->Update();
 }
 
 void GameManager::Update() {
 
-	//GameObject Updates happen here
-	if (Input::Instance()->KeyPressed(SDL_SCANCODE_X)) {
-		
-		mPlayer->WasHit();
-		mPlayerHit = true;
-		mPlayer->Active(false);
-		mAudioMgr->PlaySFX("sfx_laser1.ogg");// plays only once
-		mAudioMgr->PlayMusic("Audio.mp3");//continues playing music
-	}
-	else {
+	mScreenMgr->Update();
+	//GameEntity Updates should happen here
+	/*
+	mPlayScreen->Update();
 
-		mInput->Update();
-		mPlayer->Update();
-		mPlayer->Active(true);
-		mEnemy->Update();
-		mEnemy->Active(true);
-	}
+	if (mInput->KeyPressed(SDL_SCANCODE_RETURN)) {
+
+		mPlayScreen->StartNewGame();
+	}*/
+
 }
 
-void GameManager::LateUpdate()
-{
+void GameManager::LateUpdate() {
+
+	//Any collision detection should happen here
+
 	mInput->UpdatePrevInput();
 	mTimer->Reset();
 }
 
-void GameManager::Render()
-{
+void GameManager::Render() {
+
 	//Clears the last frame's render from the back buffer
 	mGraphics->ClearBackBuffer();
 
-	mTex->Render();
-	// Render Player
-	mPlayer->Render();
-	// Renders Enemy
-	mEnemy->Render();
+	//All other rendering is to happen here
+	mScreenMgr->Render();
+
 	//Renders the current frame
 	mGraphics->Render();
 }
 
-void GameManager::Run()
-{
+void GameManager::Run() {
+
 	while (!mQuit) {
-		//Update timer at the beginning of each iteration
+
 		mTimer->Update();
 
 		while (SDL_PollEvent(&mEvents) != 0) {
@@ -145,14 +125,14 @@ void GameManager::Run()
 				mQuit = true;
 			}
 		}
+
 		//Limits the frame rate to FRAME_RATE
-		if (mTimer->DeltaTime() >= 1.0f / FRAME_RATE) {
+		if (mTimer->DeltaTime() >= (1.0f / FRAME_RATE)) {
 
 			EarlyUpdate();
 			Update();
 			LateUpdate();
 			Render();
-
 		}
 	}
 }

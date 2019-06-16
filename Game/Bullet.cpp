@@ -1,6 +1,7 @@
 //Bullet.cpp
 //Create bullets used for Player and Enemy
 #include "Bullet.h"
+#include "BoxCollider.h"
 
 Bullet::Bullet()
 {
@@ -13,6 +14,8 @@ Bullet::Bullet()
 	mTexture->Pos(VEC2_ZERO);
 
 	Reload();
+
+	AddCollider(new BoxCollider(mTexture->ScaledDimensions));
 }
 
 
@@ -25,7 +28,7 @@ Bullet::~Bullet()
 }
 
 void Bullet::Fire(Vector2 pos) {
-
+	// where we set the bullet once is fired
 	Pos(pos);
 	Active(true);
 }
@@ -38,13 +41,13 @@ void Bullet::Reload() {
 void Bullet::Update1() {
 
 	if(Active()){
-
-		Translate(-VEC2_UP * mSpeed * mTimer->DeltaTime(), local);
+		// direction of the bullet up
+		Translate(-VEC2_UP * mSpeed * mTimer->DeltaTime());
 
 		Vector2 pos = Pos();
-
+		// checks the bounds if the bullet is offscreen or not 
 		if (pos.y < -OFFSCREEN_BUFFER || pos.y > Graphics::Instance()->SCREEN_HEIGHT + OFFSCREEN_BUFFER) {
-
+			// if it is Offscreen just reload
 			Reload();
 		}
 	}
@@ -53,7 +56,7 @@ void Bullet::Update2() {
 
 	if (Active()) {
 
-		Translate(VEC2_UP * mSpeed * mTimer->DeltaTime(), local);
+		Translate(VEC2_UP * mSpeed * mTimer->DeltaTime());
 
 		Vector2 pos = Pos();
 
@@ -67,7 +70,8 @@ void Bullet::Update2() {
 void Bullet::Render() {
 
 	if (Active()) {
-
+		// bullet render
 		mTexture->Render();
+		PhysEntity::Render();
 	}
 }

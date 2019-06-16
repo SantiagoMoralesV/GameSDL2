@@ -2,10 +2,10 @@
 //Create bullets used for Player and Enemy
 #ifndef _BULLET_H
 #define _BULLET_H
-#include "Texture.h"
+#include "PhysEntity.h"
 #include "Timer.h"
 
-class Bullet : public GameObject
+class Bullet : public PhysEntity
 {
 public:
 
@@ -33,7 +33,7 @@ public:
 	void Reload();
 
 	void Update1();// Bullet direction up (called by the player)
-	void Update2();// Bullet direction down (called by the player)
+	void Update2();// Bullet direction down (called by the Enemy)
 	void Render();// Renders Bullet
 };
 

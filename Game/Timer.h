@@ -22,7 +22,7 @@ public:
 	float DeltaTime();
 
 	// Sets the TimeScale default value: 1.0f
-	void TimeScale(float t);
+	void TimeScale(float t = 1.0f);
 
 	// Can be used to speed up or slowdown all transformations
 	// by multiplying it by the change in position or rotation

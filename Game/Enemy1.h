@@ -1,14 +1,14 @@
-//Player.h
-// Creates a Player assigns input, position and movement speed
-#ifndef _PLAYER_H
-#define _PLAYER_H
+#ifndef _ENEMY1_H
+#define _ENEMY1_h
 #include "Animation.h"
 #include "Input.h"
 #include "Bullet.h"
 #include "AudioManager.h"
 
-class Player : public GameObject
+class Enemy1 : public GameObject
 {
+
+private:
 private:
 	//Used to get the deltatime to handle movement on the player
 	Timer* mTimer;
@@ -19,10 +19,7 @@ private:
 	bool mVisible;// if true show player ship
 	bool mAnimating;// if true show death player animation
 
-	int mScore;
-	int mLives;
-
-	Texture* mShip;// create a texture for player
+	Texture* mEnemy1;// create a texture for player
 
 	Animation* mDeathAnimation;// create a death animation for player
 
@@ -38,21 +35,16 @@ private:
 
 public:
 
-	Player(); // Loads a texture for the player, animation for the death of the player and bullets
-	~Player();
+	Enemy1(); // Loads a texture for the player, animation for the death of the player and bullets
+	~Enemy1();
 
 	void Visible(bool visible);// Sets player visible to true or false
 	bool IsAnimating();// Find out if player is animating or not
 
-	int Score();
-	int Lives();
-
-	void AddScore(int change);
 
 	void WasHit();// Called by the level whenever there is a collision between the bullet and the player
 	void Update();
 	void Render();//Called to render the texture to the screen
 };
 
-#endif
-
+#endif // !_ENEMY1_H

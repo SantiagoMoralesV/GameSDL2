@@ -18,9 +18,9 @@ class Graphics
 public:
 
 	// The Width of the game's window
-	static const int SCREEN_WIDTH = 800;
+	static const int SCREEN_WIDTH = 1024;
 	// The Height of the game's window
-	static const int SCREEN_HEIGHT = 600;
+	static const int SCREEN_HEIGHT = 700;
 	// The title of the game's window
 	const char* WINDOW_TITLE = "Target Hunt";
 
@@ -43,8 +43,12 @@ public:
 	// usually used at the begining of the frame's render
 	void ClearBackBuffer();
 
+
 	//Draws the given texture to the back buffer
-	void DrawTexture(SDL_Texture* tex, SDL_Rect* clip = NULL, SDL_Rect* rend = NULL);
+	void DrawTexture(SDL_Texture* tex, SDL_Rect* clip = NULL, SDL_Rect* rend = NULL, float angle = 0.0f, SDL_RendererFlip flip = SDL_FLIP_NONE);
+
+	//Draws a line
+	void DrawLine(float startX, float startY, float endX, float endY);
 
 	// Refreshes the back buffer
 	// Usually called at then end of the frame's render

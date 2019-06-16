@@ -96,11 +96,17 @@ void Graphics::ClearBackBuffer()
 {
 	SDL_RenderClear(mRenderer);
 }
-void Graphics::DrawTexture(SDL_Texture * tex, SDL_Rect* clip, SDL_Rect* rend)
+void Graphics::DrawTexture(SDL_Texture * tex, SDL_Rect* clip, SDL_Rect* rend, float angle, SDL_RendererFlip flip)
 {
-	SDL_RenderCopy(mRenderer, tex, clip, rend);
+	SDL_RenderCopyEx(mRenderer, tex, clip, rend, angle, NULL, flip);
 
 
+}
+void Graphics::DrawLine(float startX, float startY, float endX, float endY)
+{
+	SDL_SetRenderDrawColor(mRenderer, 255, 255, 255, SDL_ALPHA_OPAQUE);
+	SDL_RenderDrawLine(mRenderer, startX, startY, endX, endY);
+	SDL_SetRenderDrawColor(mRenderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
 }
 Graphics::Graphics()
 {
@@ -166,7 +172,7 @@ bool Graphics::Init()
 	}
 
 	// Setting the renderers clear color to white
-	SDL_SetRenderDrawColor(mRenderer, 0, 0, 0, 0);
+	SDL_SetRenderDrawColor(mRenderer, 0x00, 0x00, 0x00, 0xFF);
 
 	//Initializing the SDL_image library and handling initialization errors
 	int flags = IMG_INIT_PNG;

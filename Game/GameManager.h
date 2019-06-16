@@ -5,9 +5,10 @@
 // Used to make sure all functions are called in the correct order     
 #ifndef _GAMEMANAGER_H
 #define _GAMEMANAGER_H
-#include "Player.h"
-#include "Enemy.h"
 #include "AudioManager.h"
+#include "PlayScreen.h"
+#include "Scoreboard.h"
+#include "ScreenManager.h"
 
 class GameManager
 {
@@ -33,11 +34,16 @@ private:
 	// The target frame rate of the game
 	const int  FRAME_RATE = 120;
 
+	
+
+
+
 	//Used to exit the game loop
 	bool mQuit;
 	//List of Graphics/Assets/Input to be initialized and released
 	Graphics* mGraphics;
 	AssetManager* mAssetMgr;
+
 	Input* mInput;
 	AudioManager* mAudioMgr;
 
@@ -45,11 +51,8 @@ private:
 	Timer* mTimer;
 	// Used to catch the event when the user exits the game
 	SDL_Event mEvents;
-	// Points texture
-	Animation* mAnim;
-	Texture* mTex;
-	Player* mPlayer;
-	Enemy* mEnemy;
+
+	ScreenManager* mScreenMgr;
 
 	//Is called before Update, and is used for things that need to be updated first   
 	//    for example: updating input state 
@@ -67,6 +70,7 @@ private:
 	//Is called after Late Update   
 	void Render();
 
+	
 };
 
 #endif 

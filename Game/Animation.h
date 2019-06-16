@@ -33,8 +33,11 @@ public:
 	//Sets the wrap mode of the animation
 	void WrapMode(WRAP_MODE mode);
 
+	// if want to repeat animation over and over
 	void ResetAnimation();
 
+	//Always returns true if the wrap mode is loop
+	// returns false once the animation is done
 	bool IsAnimating();
 
 	//Used to update the animation frames and loop the animation if needed

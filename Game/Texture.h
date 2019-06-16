@@ -24,6 +24,10 @@ public:
 	//color - The color of the text to be rendered
 	Texture(std::string text, std::string fontPath, int size, SDL_Color color);
 	~Texture();
+
+	// Gets scaled dimension of the texture on the screen
+	Vector2 ScaledDimensions();
+
 	//Called to render the texture to the screen
 	virtual void Render();
 

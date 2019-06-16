@@ -35,12 +35,14 @@ void Animation::WrapMode(WRAP_MODE mode)
 
 void Animation::ResetAnimation()
 {
+	// Resets the timer back to zero and animation done to false
 	mAnimationTimer = 0.0f;
 	mAnimationDone = false;
 }
 
 bool Animation::IsAnimating()
 {
+	// if animation is not done is animating will be true
 	return !mAnimationDone;
 }
 
@@ -57,8 +59,7 @@ void Animation::Update() {
 
 				mAnimationTimer -= mAnimationSpeed;
 
-			}
-			else {
+			} else {
 
 				mAnimationDone = true;
 				mAnimationTimer = mAnimationSpeed - mTimePerFrame;

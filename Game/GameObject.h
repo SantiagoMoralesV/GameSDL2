@@ -13,7 +13,7 @@ public:
 	enum SPACE { local = 0, world = 1 };
 
 	//pos is the starting position of the new GameObject
-	GameObject(float x = 0.0f, float y = 0.0f);;
+	GameObject(Vector2 pos = VEC2_ZERO);;
 	~GameObject();
 
 	//Sets the GameObject's position, it only updates local space                               
@@ -30,13 +30,23 @@ public:
 	//Sets the GameObject's rotation, it only updates local space                               
 	//If the object has a parent, its new rotation is relative to the parent's world rotation   
 	//If the object has no parent, its new rotation is set to the given rotation 
-
 	void Rotation(float rotation);
+
 	//Returns the rotation of the GameObject                                                                         
 	//If space = world, the world rotation is returned (total rotation of parent[if it has one] and object)            
 	//if space = local, if the object has a parent, the local rotation is returned (relative to the parent's rotation) 
 	//       otherwise if the object has no parent, the world rotation is returned instead (relative to the origin) 
 	float Rotation(SPACE space = world);
+
+	//Sets the GameEntity's scale, it only updates local space    
+	void Scale(Vector2 scale);
+
+	//Returns the scale of the GameObject                                                                             
+	//If space = world, the world scale is returned (product of the parent and local scale)                            
+	//if space = local, if the object has a parent, the local scale is returned (relative to the parent's scale)       
+	//       otherwise if the object has no parent, the GameObject's scale is returned instead                         
+	//-----------------------------------------------------------------------------------------------------------------
+	Vector2 Scale(SPACE space = world);
 
 	//Sets the active state of the GameObject
 	void Active(bool active);
@@ -61,7 +71,9 @@ public:
 	virtual void Render();
 
 	//Translates the GameObject's local position by the given amount
-	void Translate(Vector2 vec, SPACE space);
+	void Translate(Vector2 vec);
+
+	void Rotate(float amount);
 
 private:
 
@@ -69,6 +81,7 @@ private:
 	// used instead  
 	Vector2 mPos;
 	float mRotation;
+	Vector2 mScale;
 	//Set to true if the object is to be updated and rendered 
 	bool mActive;
 	//A GameObject can only have one parent at a time, but can have many children 
