@@ -1,24 +1,29 @@
-#ifndef  _SCOREBOARD_H_
-#define _SCOREBOARD_H_
+#ifndef _SCOREBOARD_H
+#define _SCOREBOARD_H
 #include "Texture.h"
 #include <vector>
 
-class ScoreBoard : public GameObject
+class Scoreboard : public GameObject
 {
-public:
-	ScoreBoard();
-	~ScoreBoard();
-
-	//to pass score
-	void Score(int score);
-	void Render();
 
 private:
-	//vector that will track all texture
+
 	std::vector<Texture*> mScore;
 
-	//delete all textures and score and clear vector
-	void clearBoard();
+	// Delete all the textures in the board and clear textures
+	void ClearBoard();
+
+	SDL_Color mColor;
+
+
+public:
+	Scoreboard();
+	Scoreboard(SDL_Color color);
+	~Scoreboard();
+
+	void Score(int score);
+
+	void Render();
 };
 
-#endif // ! _SCOREBOARD_H_
+#endif // !_SCOREBOARD_H

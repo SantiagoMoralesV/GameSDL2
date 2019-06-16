@@ -7,11 +7,11 @@ StartScreen::StartScreen()
 	mInput = Input::Instance();
 
 	//screen entities
-	mTopbar = new GameObject(Graphics::Instance()->SCREEN_WIDTH * 0.5f, 80.0f);
-	mPlayer = new Texture("Player", "ArcadeClassic.ttf", 32, { 200, 0, 0 });
-	mHiScore = new Texture("HI SCORE", "ArcadeClassic.ttf", 32, { 200, 0, 0 });
-	mPlayerScore = new ScoreBoard();
-	mTopScore = new ScoreBoard();
+	mTopbar = new GameObject(Vector2(Graphics::Instance()->SCREEN_WIDTH * 0.5f, 80.0f));
+	mPlayer = new Texture("Player", "kenvector_future.ttf", 32, { 200, 0, 0 });
+	mHiScore = new Texture("HI SCORE", "kenvector_future.ttf", 32, { 200, 0, 0 });
+	mPlayerScore = new Scoreboard();
+	mTopScore = new Scoreboard();
 
 	//keeping elements in TopBar
 	mPlayer->Parent(mTopbar);
@@ -39,10 +39,10 @@ StartScreen::StartScreen()
 
 	//Play Mode entities
 	//setting up options for player
-	mPlayModes = new GameObject(Graphics::Instance()->SCREEN_WIDTH*0.5f, Graphics::Instance()->SCREEN_HEIGHT*0.65f);
-	mStartGame = new Texture("Start Game", "ArcadeClassic.ttf", 32, {230, 230, 230});
-	mInstructions = new Texture("Help", "ArcadeClassic.ttf", 32, { 230, 230, 230 });
-	mQuit = new Texture("Quit", "ArcadeClassic.ttf", 32, { 230, 230, 230 });
+	mPlayModes = new GameObject(Vector2(Graphics::Instance()->SCREEN_WIDTH*0.5f, Graphics::Instance()->SCREEN_HEIGHT*0.65f));
+	mStartGame = new Texture("Start Game", "kenvector_future.ttf", 32, {230, 230, 230});
+	mInstructions = new Texture("Help", "kenvector_future.ttf", 32, { 230, 230, 230 });
+	mQuit = new Texture("Quit", "kenvector_future.ttf", 32, { 230, 230, 230 });
 	mCursor = new Texture("cursor.png");
 	
 	mStartGame->Parent(mPlayModes);
@@ -120,6 +120,7 @@ void StartScreen::Render()
 	mQuit->Render();
 	mCursor->Render();
 }
+
 
 int StartScreen::SelectedMode()
 {

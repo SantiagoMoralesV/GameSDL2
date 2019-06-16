@@ -2,7 +2,7 @@
 #define _STARTSCREEN_H
 #include "Animation.h"
 #include "Input.h"
-#include "ScoreBoard.h"
+#include "Scoreboard.h"
 
 class StartScreen : public GameObject
 {
@@ -11,6 +11,7 @@ public:
 	~StartScreen();
 	void Update();
 	void Render();
+
 
 	//for current mode in game
 	int SelectedMode();
@@ -24,8 +25,8 @@ private:
 	GameObject* mTopbar;
 	Texture* mPlayer;
 	Texture* mHiScore;
-	ScoreBoard* mPlayerScore;
-	ScoreBoard* mTopScore;
+	Scoreboard* mPlayerScore;
+	Scoreboard* mTopScore;
 
 	//Logo entities
 	Texture* mLogo;

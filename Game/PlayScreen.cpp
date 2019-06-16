@@ -23,7 +23,7 @@ PlayScreen::PlayScreen()
 	
 	mPlayer = NULL;
 	mEnemy1 = NULL;
-	Enemy::CreatePaths();
+
 }
 
 

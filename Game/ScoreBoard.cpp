@@ -1,65 +1,67 @@
-#include "ScoreBoard.h"
+#include "Scoreboard.h"
 
 
 
-ScoreBoard::ScoreBoard()
-{
+Scoreboard::Scoreboard()
+	: Scoreboard({ 230, 230, 230 })
+{}
+
+Scoreboard::Scoreboard(SDL_Color color) {
+
+	mColor = color;
 	Score(0);
 }
 
 
-ScoreBoard::~ScoreBoard()
+Scoreboard::~Scoreboard()
 {
-	clearBoard();
+	ClearBoard();
 }
 
-void ScoreBoard::Score(int score)
+void Scoreboard::ClearBoard()
 {
-	clearBoard();
+	
+	for (int i = 0; i < mScore.size(); i++) {
 
-	if (score == 0)
-	{
-		//loop till two zeros are deisplayed
-		for (int i = 0; i < 2; i++)
-		{
-			//to show "00" score
-			mScore.push_back(new Texture("0", "ArcadeClassic.ttf", 32, { 230,230,230 }));
+		delete mScore[i];
+		mScore[i] = NULL;
+	}
+
+	mScore.clear();
+}
+
+void Scoreboard::Score(int score) 
+{
+	ClearBoard();
+
+	if (score == 0) {
+
+		for (int i = 0; i < 2; i++) {
+
+			mScore.push_back(new Texture("0", "kenvector_future.ttf", 32, mColor ));
 			mScore[i]->Parent(this);
 			mScore[i]->Pos(Vector2(-32.0f*i, 0.0f));
 		}
 	}
-	else
-	{
-		//convert score to string
+	else {
+
 		std::string str = std::to_string(score);
 		int lastIndex = str.length() - 1;
 
-		for (int i = 0; i <= lastIndex; i++)
-		{
-			//to get one character at a time
-			mScore.push_back(new Texture(str.substr(i, 1), "ArcadeClassic.ttf", 32, { 230,230,230 }));
-			mScore[i]->Parent(this);
-			//adding numbers from left
-			mScore[i]->Pos(Vector2(-32.0f*(lastIndex - i), 0.0f));
+		for (int i = 0; i <= lastIndex; i++) {
 
+			mScore.push_back(new Texture(str.substr(i, 1), "kenvector_future.ttf", 32, mColor));
+			mScore[i]->Parent(this);
+			mScore[i]->Pos(Vector2(-32.0f*(lastIndex - i), 0.0f));
 		}
 	}
+
 }
 
-void ScoreBoard::Render()
+void Scoreboard::Render()
 {
-	for (int i = 0; i < mScore.size(); i++)
-	{
+	for (int i = 0; i < mScore.size(); i++) {
 		mScore[i]->Render();
 	}
 }
 
-void ScoreBoard::clearBoard()
-{
-	for (int i = 0; i < mScore.size(); i++)
-	{
-		delete mScore[i];
-		mScore[i] = NULL;
-	}
-	mScore.clear();
-}

@@ -2,7 +2,6 @@
 #define _LEVEL_H
 #include "PlaySideBar.h"
 #include "Player.h"
-#include "Enemy.h"
 #include "Enemy1.h"
 
 class Level : public GameObject

@@ -2,22 +2,6 @@
 
 ScreenManager * ScreenManager::sInstance = NULL;
 
-ScreenManager::ScreenManager()
-{
-	//initialising all values
-	mInput = Input::Instance();
-	mStartScreen = new StartScreen();
-	mCurrentScreen = start;
-}
-
-
-ScreenManager::~ScreenManager()
-{
-	mInput = NULL;
-	delete mStartScreen;
-	mStartScreen = NULL;
-}
-
 ScreenManager * ScreenManager::Instance()
 {
 	if (sInstance == NULL)
@@ -31,7 +15,32 @@ void ScreenManager::Release()
 {
 	delete sInstance;
 	sInstance = NULL;
+
 }
+
+ScreenManager::ScreenManager()
+{
+	//initialising all values
+	mInput = Input::Instance();
+	
+	mStartScreen = new StartScreen();
+	mPlayScreen = new PlayScreen();
+	mTopScore = new Scoreboard();
+
+	mCurrentScreen = start;
+}
+
+ScreenManager::~ScreenManager()
+{
+	mInput = NULL;
+
+	delete mStartScreen;
+	mStartScreen = NULL;
+
+	delete mPlayScreen;
+	mPlayScreen = NULL;
+}
+
 
 void ScreenManager::Update()
 {
@@ -42,11 +51,13 @@ void ScreenManager::Update()
 		if (mInput->KeyPressed(SDL_SCANCODE_RETURN))
 		{
 			mCurrentScreen = play;
+			mPlayScreen->StartNewGame();
 		}
 		break;
 	case play:
-		if (mInput->KeyPressed(SDL_SCANCODE_ESCAPE))
-		{
+		mPlayScreen->Update();
+		if (mPlayScreen->GameOver()) {
+
 			mCurrentScreen = start;
 		}
 		break;
@@ -64,6 +75,8 @@ void ScreenManager::Render()
 
 		break;
 	case play:
+		mPlayScreen->Render();
+
 		break;
 	default:
 		break;
