@@ -5,10 +5,10 @@
 #include "Bullet.h"
 #include "AudioManager.h"
 
-class Enemy1 : public GameObject
+
+class Enemy1 : public PhysEntity
 {
 
-private:
 private:
 	//Used to get the deltatime to handle movement on the player
 	Timer* mTimer;
@@ -32,6 +32,7 @@ private:
 	void HandleMovement();// Called when player is active to handle input
 	void HandleFiring();// Called to handle bullet firing input
 
+	bool mWashit;
 
 public:
 
@@ -40,7 +41,6 @@ public:
 
 	void Visible(bool visible);// Sets player visible to true or false
 	bool IsAnimating();// Find out if player is animating or not
-
 
 	void WasHit();// Called by the level whenever there is a collision between the bullet and the player
 	void Update();

@@ -1,7 +1,7 @@
 // Player.cpp
 // Creates a Player assigns input, position and movement speed
 #include "Player.h"
-
+#include "BoxCollider.h"
 
 Player::Player()
 {
@@ -33,6 +33,12 @@ Player::Player()
 
 		mBullets[i] = new Bullet();
 	}
+	// Scales the ship dimesion to the box collider
+	//AddCollider(new BoxCollider(mShip->ScaledDimensions()));
+	AddCollider(new BoxCollider(Vector2(50.0f, 75.0f)));
+	AddCollider(new BoxCollider(Vector2(28.0f, 60.0f)), Vector2(40.0f, 10.0f));
+	AddCollider(new BoxCollider(Vector2(28.0f, 60.0f)), Vector2(-40.0f, 10.0f));
+	
 }
 
 
@@ -179,4 +185,5 @@ void Player::Render() {
 
 		mBullets[i]->Render();
 	}
+	PhysEntity::Render();
 }

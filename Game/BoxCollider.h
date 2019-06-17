@@ -17,6 +17,8 @@ public:
 	// Constructor takes size which is the box size
 	BoxCollider(Vector2 size);
 	~BoxCollider();
+	// how far is the vertex in the box from the center of the object attached too
+	Vector2 GetFurthestPoint() override;
 };
 
 #endif // !_BOXCOLLIDER_H

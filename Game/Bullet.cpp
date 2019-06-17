@@ -15,7 +15,7 @@ Bullet::Bullet()
 
 	Reload();
 
-	AddCollider(new BoxCollider(mTexture->ScaledDimensions));
+	AddCollider(new BoxCollider(mTexture->ScaledDimensions()));
 }
 
 

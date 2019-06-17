@@ -1,5 +1,5 @@
 #include "Enemy1.h"
-
+#include "BoxCollider.h"
 
 Enemy1::Enemy1()
 {
@@ -10,7 +10,7 @@ Enemy1::Enemy1()
 	mVisible = false;// animation visibility start as false since is only triggered when player is hit
 	mAnimating = false; // animation start as false since is only triggered when player is hit
 
-	mEnemy1 = new Texture("sheet.png", 144, 157, 102, 83);
+	mEnemy1 = new Texture("enemyGreen2.png");
 	mEnemy1->Parent(this);
 	mEnemy1->Pos(VEC2_ZERO);
 
@@ -28,6 +28,11 @@ Enemy1::Enemy1()
 
 		mBullets[i] = new Bullet();
 	}
+
+	//AddCollider(new BoxCollider(mEnemy1->ScaledDimensions()));
+	AddCollider(new BoxCollider(Vector2(50.0f, 80.0f)));
+	AddCollider(new BoxCollider(Vector2(30.0f, 30.0f)), Vector2(40.0f, 0.0f));
+	AddCollider(new BoxCollider(Vector2(30.0f, 30.0f)), Vector2(-40.0f, 0.0f));
 }
 
 
@@ -50,15 +55,16 @@ Enemy1::~Enemy1()
 		mBullets[i] = NULL;
 
 	}
+	mWashit = false;
 }
 
 void Enemy1::HandleMovement() {
 
-	if (mInput->KeyDown(SDL_SCANCODE_RIGHT)) {
+	if (mInput->KeyDown(SDL_SCANCODE_D)) {
 
 		Translate(VEC2_RIGHT*mMoveSpeed*mTimer->DeltaTime());
 	}
-	else if (mInput->KeyDown(SDL_SCANCODE_LEFT)) {
+	else if (mInput->KeyDown(SDL_SCANCODE_A)) {
 
 		Translate(-VEC2_RIGHT*mMoveSpeed*mTimer->DeltaTime());
 	}
@@ -101,19 +107,25 @@ bool Enemy1::IsAnimating() {
 	return mAnimating;
 }
 
-
 void Enemy1::WasHit()
 {
+		// Resets the timer back to zero and animation done to false
+		//mDeathAnimation->ResetAnimation();
+		//mAnimating = true;
+		//play explosion sound effect
+		//mAudio->PlaySFX("explosion.wav");
+		if (mWashit) {
 
-	// Resets the timer back to zero and animation done to false
-	mDeathAnimation->ResetAnimation();
-	mAnimating = true;
-	//play explosion sound effect
-	mAudio->PlaySFX("explosion.wav");
-
+			mWashit = true;
+			delete mEnemy1;
+			mEnemy1 = new Texture("enemyShip1damage1");
+			mEnemy1->Parent(this);
+			mEnemy1->Pos(VEC2_ZERO);
+			mAudio->PlaySFX("enemyExplosion.wav");
+		}
 }
 
-void Enemy1::Update() {
+	void Enemy1::Update() {
 
 	if (mAnimating) {
 
@@ -135,7 +147,7 @@ void Enemy1::Update() {
 	}
 	// Updating the bullets
 	for (int i = 0; i < MAX_BULLETS; i++)
-		mBullets[i]->Update1();
+		mBullets[i]->Update2();
 
 }
 
@@ -160,4 +172,5 @@ void Enemy1::Render() {
 
 		mBullets[i]->Render();
 	}
+	PhysEntity::Render();
 }

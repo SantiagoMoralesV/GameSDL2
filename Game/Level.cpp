@@ -39,7 +39,7 @@ Level::Level(int stage, PlaySideBar* sideBar, Player* player, Enemy1* enemy)
 	mPlayerRespawnLabelOnScreen = 2.0f;// the timer is counting once it hits 2 shows the ready label
 
 	mEnemy1 = enemy;
-
+	mEnemyHit = false;
 	// new label for the Game Over
 	mGameOverLabel = new Texture("GAME OVER", "kenvector_future.ttf", 32, { 150, 0, 0 });
 	mGameOverLabel->Parent(this);
@@ -110,7 +110,15 @@ void Level::HandleStartLabels()
 
 void Level::HandleCollisions()
 {
-	if (!mPlayerHit) {
+	if (!mEnemyHit) {
+		if (Input::Instance()->KeyPressed(SDL_SCANCODE_L)) {
+
+			mEnemy1->WasHit();// the player was hit
+			mEnemyHit = true;
+			mEnemy1->Active(false);// player cant move around 
+		}
+	}
+	else if (!mPlayerHit) {
 
 		if (Input::Instance()->KeyPressed(SDL_SCANCODE_X)) {
 
@@ -120,6 +128,8 @@ void Level::HandleCollisions()
 			mPlayerHit = true;
 			mPlayerRespawnTimer = 0.0f;// reset timer to 0.0f
 			mPlayer->Active(false);// player cant move around 
+
+			
 		}
 	}
 }
@@ -161,6 +171,18 @@ void Level::HandlePlayerDeath()
 	}
 }
 
+void Level::HandleEnemyDeath()
+{
+	if (!mPlayer->IsAnimating()) {
+	
+		mEnemy1->Active(true);
+		mEnemy1->Visible(true);
+		mEnemyHit = false;
+			
+	}
+
+}
+
 Level::LEVEL_STATES Level::State() {
 
 	return mCurrentState;
@@ -178,6 +200,9 @@ void Level::Update()
 		// where we handle all collisions
 		HandleCollisions();
 
+		if (mEnemyHit) {
+			HandleEnemyDeath();
+		}
 		// if player has been hit handle the player dead
 		if (mPlayerHit) {
 
@@ -209,8 +234,6 @@ void Level::Render()
 		}
 	}
 	else {
-		//mEnemy->Render();
-
 		// if player was hit
 		if (mPlayerHit) {
 			// Renders the Ready label on the screen once player is ready again

@@ -19,6 +19,7 @@ protected:
 	ColliderType mType;
 	// if DEBUG_COLLIDERS it is true render our debug textures if false not render
 	static const bool DEBUG_COLLIDERS = true;
+
 	// mDebugTexture Texture 
 	Texture* mDebugTexture;
 
@@ -28,6 +29,12 @@ public:
 
 	Collider(ColliderType type);
 	virtual ~Collider();
+
+	// pure virtual function to be overriden by child classes
+	virtual Vector2 GetFurthestPoint() = 0;
+
+	ColliderType GetType();
+
 
 	virtual void Render();
 };

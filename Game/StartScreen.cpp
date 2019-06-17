@@ -33,13 +33,13 @@ StartScreen::StartScreen()
 	//Logo entities
 	mLogo = new Texture("logo.png", 0, 0, 318, 163);
 	
-	mLogo->Pos(Vector2(Graphics::Instance()->SCREEN_WIDTH*0.5f, Graphics::Instance()->SCREEN_HEIGHT*0.4f));
+	mLogo->Pos(Vector2(Graphics::Instance()->SCREEN_WIDTH*0.4f, Graphics::Instance()->SCREEN_HEIGHT*0.4f));
 	mLogo->Parent(this);
 
 
 	//Play Mode entities
 	//setting up options for player
-	mPlayModes = new GameObject(Vector2(Graphics::Instance()->SCREEN_WIDTH*0.5f, Graphics::Instance()->SCREEN_HEIGHT*0.65f));
+	mPlayModes = new GameObject(Vector2(Graphics::Instance()->SCREEN_WIDTH*0.5f, Graphics::Instance()->SCREEN_HEIGHT*0.7f));
 	mStartGame = new Texture("Start Game", "kenvector_future.ttf", 32, {230, 230, 230});
 	mInstructions = new Texture("Help", "kenvector_future.ttf", 32, { 230, 230, 230 });
 	mQuit = new Texture("Quit", "kenvector_future.ttf", 32, { 230, 230, 230 });
@@ -53,7 +53,7 @@ StartScreen::StartScreen()
 	mStartGame->Pos(Vector2(-40.0f,-30.0f));
 	mInstructions->Pos(Vector2(-40.0f, 5.0f));
 	mQuit->Pos(Vector2(-40.0f, 40.0f));
-	mCursor->Pos(Vector2(-150.0f, -30.0f));
+	mCursor->Pos(Vector2(-200.0f, -30.0f));
 	
 	mPlayModes->Parent(this);
 

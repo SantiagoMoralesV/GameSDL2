@@ -36,6 +36,7 @@ private:
 	float mPlayerRespawnTimer;// increments and waits for the delay
 	float mPlayerRespawnLabelOnScreen;// Shows the ready label before player has respawed
 
+	bool mEnemyHit;
 
 	Texture* mGameOverLabel;// Texture for the Game Over Label
 	bool mGameOver;// it will be set to true if player runs out of lives
@@ -54,6 +55,7 @@ private:
 	void HandleCollisions();// Handles collisions
 	void HandlePlayerDeath();// Handles player death
 
+	void HandleEnemyDeath();
 public:
 
 	Level(int stage, PlaySideBar* sideBar, Player* player, Enemy1* enemy1);

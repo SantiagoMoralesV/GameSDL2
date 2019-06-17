@@ -8,14 +8,20 @@ class PhysEntity : public GameObject
 {
 protected:
 
+	unsigned long mId;
+
 	// To be able to have multiple colliders to aproximate the shape of the object to have more accurate collision
 	std::vector<Collider*> mColliders;
+	// collider pointer
+	Collider* mBroadPhaseCollider;
 
 public:
 
 	PhysEntity();
 	//Clear all the colliders
 	virtual ~PhysEntity();
+
+	unsigned long GetId();
 
 	virtual void Render();
 

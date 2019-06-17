@@ -7,7 +7,8 @@
 #include "Bullet.h"
 #include "AudioManager.h"
 
-class Player : public GameObject
+
+class Player : public PhysEntity
 {
 private:
 	//Used to get the deltatime to handle movement on the player

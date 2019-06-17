@@ -28,6 +28,30 @@ BoxCollider::~BoxCollider()
 	}
 }
 
+Vector2 BoxCollider::GetFurthestPoint() {
+
+	// get the local position of the collider relative to the player
+	Vector2 localPos = Pos(GameObject::local);
+
+	// assuming that the first index is the furthest one to start off
+	int furthestIndex = 0;
+	// getting the magnitute of the two distances finding the furthest vertex
+	float dist = (localPos + mVerts[0]->Pos(GameObject::local)).MagnitudeSqr();
+	float otherDist = 0.0f;
+
+	for (int i = 0; i < MAX_VERTS; i++) {
+
+		otherDist = (localPos + mVerts[i]->Pos(GameObject::local)).MagnitudeSqr();
+
+		if (otherDist > dist) {
+			// furthest index
+			furthestIndex = i;
+			dist = otherDist;
+		}
+	}
+	// returning the furthest point
+	return localPos + mVerts[furthestIndex]->Pos(GameObject::local);
+}
 
 void BoxCollider::AddVert(int index, Vector2 pos) {
 	
