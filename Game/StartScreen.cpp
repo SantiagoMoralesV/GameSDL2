@@ -41,18 +41,18 @@ StartScreen::StartScreen()
 	//setting up options for player
 	mPlayModes = new GameObject(Vector2(Graphics::Instance()->SCREEN_WIDTH*0.5f, Graphics::Instance()->SCREEN_HEIGHT*0.7f));
 	mStartGame = new Texture("Start Game", "kenvector_future.ttf", 32, {230, 230, 230});
-	mInstructions = new Texture("Help", "kenvector_future.ttf", 32, { 230, 230, 230 });
+	//mInstructions = new Texture("Help", "kenvector_future.ttf", 32, { 230, 230, 230 });
 	mQuit = new Texture("Quit", "kenvector_future.ttf", 32, { 230, 230, 230 });
 	mCursor = new Texture("cursor.png");
 	
 	mStartGame->Parent(mPlayModes);
-	mInstructions->Parent(mPlayModes);
+	//mInstructions->Parent(mPlayModes);
 	mQuit->Parent(mPlayModes);
 	mCursor->Parent(mPlayModes);
 
 	mStartGame->Pos(Vector2(-40.0f,-30.0f));
-	mInstructions->Pos(Vector2(-40.0f, 5.0f));
-	mQuit->Pos(Vector2(-40.0f, 40.0f));
+	//mInstructions->Pos(Vector2(-40.0f, 5.0f));
+	mQuit->Pos(Vector2(-40.0f, 5.0f));
 	mCursor->Pos(Vector2(-200.0f, -30.0f));
 	
 	mPlayModes->Parent(this);
@@ -85,8 +85,8 @@ StartScreen::~StartScreen()
 	mPlayModes = NULL;
 	delete mStartGame;
 	mStartGame = NULL;
-	delete mInstructions;
-	mInstructions = NULL;
+	//delete mInstructions;
+	//mInstructions = NULL;
 	delete mQuit;
 	mQuit = NULL;
 	delete mCursor;
@@ -116,7 +116,7 @@ void StartScreen::Render()
 	mLogo->Render();
 
 	mStartGame->Render();
-	mInstructions->Render();
+	//mInstructions->Render();
 	mQuit->Render();
 	mCursor->Render();
 }
@@ -130,15 +130,15 @@ int StartScreen::SelectedMode()
 void StartScreen::ChangeSelectedMode(int change)
 {
 	mSelectedMode += change;
-	for (int i = 0; i <= 2; i++)
+	for (int i = 0; i <= 1; i++)
 	{
 		if (mSelectedMode < 0)
 		{
-			mSelectedMode++;
+			mSelectedMode = 1;
 		}
-		else if (mSelectedMode > 2)
+		else if (mSelectedMode > 1)
 		{
-			mSelectedMode--;
+			mSelectedMode = 0;
 		}
 	}
 	
