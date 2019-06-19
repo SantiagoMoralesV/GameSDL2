@@ -92,9 +92,10 @@ void Level::StartStage()
 
 void Level::HandleStartLabels()
 {
+	// label timer increases
 	mLabelTimer += mTimer->DeltaTime();
 	if (mLabelTimer >= mStageLabelOffScreen) {
-
+		// starting stages above stage one
 		if (mStage > 1) {
 
 			StartStage();
@@ -102,7 +103,7 @@ void Level::HandleStartLabels()
 		else {
 
 			if (mLabelTimer >= mReadyLabelOffScreen) {
-
+				// start stage we want to show player and enemy
 				StartStage();
 				mPlayer->Active(true);
 				mPlayer->Visible(true);
@@ -156,11 +157,12 @@ void Level::HandlePlayerDeath()
 		else {
 
 			if (mGameOverTimer == 0.0f)
+				// remove player from visible if is game over
 				mPlayer->Visible(false);
 
 			mGameOverTimer += mTimer->DeltaTime();
 			if (mGameOverTimer >= mGameOverDelay) {
-
+				// set current state to game over
 				mCurrentState = gameover;
 			}
 		}
@@ -168,7 +170,7 @@ void Level::HandlePlayerDeath()
 }
 
 Level::LEVEL_STATES Level::State() {
-
+	// returns the state
 	return mCurrentState;
 }
 

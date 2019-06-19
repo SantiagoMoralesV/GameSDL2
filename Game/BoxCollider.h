@@ -10,7 +10,7 @@ private:
 	static const int MAX_VERTS = 4;
 	
 	GameObject* mVerts[MAX_VERTS];
-	
+	// takes index and position
 	void AddVert(int index, Vector2 pos);
 
 public:
