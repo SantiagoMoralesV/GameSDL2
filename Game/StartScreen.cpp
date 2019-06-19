@@ -41,17 +41,17 @@ StartScreen::StartScreen()
 	//setting up options for player
 	mPlayModes = new GameObject(Vector2(Graphics::Instance()->SCREEN_WIDTH*0.5f, Graphics::Instance()->SCREEN_HEIGHT*0.7f));
 	mStartGame = new Texture("Start Game", "kenvector_future.ttf", 32, {230, 230, 230});
-	mInstructions = new Texture("Help", "kenvector_future.ttf", 32, { 230, 230, 230 });
+	//mInstructions = new Texture("Help", "kenvector_future.ttf", 32, { 230, 230, 230 });
 	mQuit = new Texture("Quit", "kenvector_future.ttf", 32, { 230, 230, 230 });
 	mCursor = new Texture("cursor.png");
 	
 	mStartGame->Parent(mPlayModes);
-	mInstructions->Parent(mPlayModes);
+	//mInstructions->Parent(mPlayModes);
 	mQuit->Parent(mPlayModes);
 	mCursor->Parent(mPlayModes);
 
 	mStartGame->Pos(Vector2(-40.0f,-30.0f));
-	mInstructions->Pos(Vector2(-40.0f, 5.0f));
+	//mInstructions->Pos(Vector2(-40.0f, 5.0f));
 	mQuit->Pos(Vector2(-40.0f, 40.0f));
 	mCursor->Pos(Vector2(-200.0f, -30.0f));
 	
@@ -116,7 +116,7 @@ void StartScreen::Render()
 	mLogo->Render();
 
 	mStartGame->Render();
-	mInstructions->Render();
+	//mInstructions->Render();
 	mQuit->Render();
 	mCursor->Render();
 }

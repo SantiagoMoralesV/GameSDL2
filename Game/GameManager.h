@@ -63,8 +63,7 @@ private:
 	void LateUpdate();
 	// Returns animation on the player
 	bool mPlayerHit;
-	// Returns animation on the Enemy 
-	bool mEnemyHit;
+	
 
 	//Clears the back buffer, and then is used to render all game entities  
 	//Is called after Late Update   

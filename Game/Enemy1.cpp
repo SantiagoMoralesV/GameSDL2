@@ -55,20 +55,20 @@ Enemy1::~Enemy1()
 		mBullets[i] = NULL;
 
 	}
-	mWashit = false;
+	
 }
 
 void Enemy1::HandleMovement() {
 
 	if (mInput->KeyDown(SDL_SCANCODE_D)) {
-
+		// if pressed right arrow moves to right
 		Translate(VEC2_RIGHT*mMoveSpeed*mTimer->DeltaTime());
 	}
 	else if (mInput->KeyDown(SDL_SCANCODE_A)) {
-
+		// if pressed lefty arrow moves to left
 		Translate(-VEC2_RIGHT*mMoveSpeed*mTimer->DeltaTime());
 	}
-
+	// bounds of the movement enemy
 	Vector2 pos = Pos(local);
 	if (pos.x < mMoveBounds.x)
 		pos.x = mMoveBounds.x;
@@ -103,27 +103,10 @@ void Enemy1::Visible(bool visible) {
 }
 
 bool Enemy1::IsAnimating() {
-
+	// return if is animating
 	return mAnimating;
 }
 
-void Enemy1::WasHit()
-{
-		// Resets the timer back to zero and animation done to false
-		//mDeathAnimation->ResetAnimation();
-		//mAnimating = true;
-		//play explosion sound effect
-		//mAudio->PlaySFX("explosion.wav");
-		if (mWashit) {
-
-			mWashit = true;
-			delete mEnemy1;
-			mEnemy1 = new Texture("enemyShip1damage1");
-			mEnemy1->Parent(this);
-			mEnemy1->Pos(VEC2_ZERO);
-			mAudio->PlaySFX("enemyExplosion.wav");
-		}
-}
 
 	void Enemy1::Update() {
 
@@ -172,5 +155,6 @@ void Enemy1::Render() {
 
 		mBullets[i]->Render();
 	}
+	//renders box colliders
 	PhysEntity::Render();
 }

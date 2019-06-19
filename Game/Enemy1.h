@@ -32,8 +32,6 @@ private:
 	void HandleMovement();// Called when player is active to handle input
 	void HandleFiring();// Called to handle bullet firing input
 
-	bool mWashit;
-
 public:
 
 	Enemy1(); // Loads a texture for the player, animation for the death of the player and bullets
@@ -42,7 +40,7 @@ public:
 	void Visible(bool visible);// Sets player visible to true or false
 	bool IsAnimating();// Find out if player is animating or not
 
-	void WasHit();// Called by the level whenever there is a collision between the bullet and the player
+	
 	void Update();
 	void Render();//Called to render the texture to the screen
 };

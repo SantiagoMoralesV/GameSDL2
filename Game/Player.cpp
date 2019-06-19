@@ -14,12 +14,16 @@ Player::Player()
 
 	mScore = 0;
 	mLives = 2;
-
+	// player ship texture
 	mShip = new Texture("sheet.png", 144, 157, 102, 83);
+	// relative to its parent
 	mShip->Parent(this);
+	// player ship position
 	mShip->Pos(VEC2_ZERO);
 
+	//move speed of player
 	mMoveSpeed = 300.0f;
+	//move bounds
 	mMoveBounds = Vector2(55.0f, 740);
 
 	//Death animation spritesheet played horizontally
@@ -66,14 +70,14 @@ Player::~Player()
 void Player::HandleMovement() {
 
 	if (mInput->KeyDown(SDL_SCANCODE_RIGHT)) {
-
+		// if right key pressed player moves to the right
 		Translate(VEC2_RIGHT*mMoveSpeed*mTimer->DeltaTime());
 	}
 	else if (mInput->KeyDown(SDL_SCANCODE_LEFT)) {
-
+		//if left key pressed player moves to the left
 		Translate(-VEC2_RIGHT*mMoveSpeed*mTimer->DeltaTime());
 	}
-
+	// setting player bounds
 	Vector2 pos = Pos(local);
 	if (pos.x < mMoveBounds.x)
 		pos.x = mMoveBounds.x;
@@ -102,28 +106,31 @@ void Player::HandleFiring()
 }
 
 void Player::Visible(bool visible) {
-
+	//returns if player is visible or not
 	mVisible = visible;
 
 }
 
 bool Player::IsAnimating() {
-
+	// returns if player is animating or not
 	return mAnimating;
 }
 
 int Player::Score()
 {
+	// returns player score
 	return mScore;
 }
 
 int Player::Lives()
 {
+	// returns player lives
 	return mLives;
 }
 
 void Player::AddScore(int change)
 {
+	// adds up score of the player
 	mScore += change;
 }
 
@@ -185,5 +192,6 @@ void Player::Render() {
 
 		mBullets[i]->Render();
 	}
+	// renders box colliders
 	PhysEntity::Render();
 }

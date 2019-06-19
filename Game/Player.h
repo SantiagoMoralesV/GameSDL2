@@ -15,13 +15,14 @@ private:
 	Timer* mTimer;
 	//Used to get the input on the player
 	Input* mInput;
+	// used for the player death player audio and bullet firing
 	AudioManager* mAudio;
 
 	bool mVisible;// if true show player ship
 	bool mAnimating;// if true show death player animation
 
-	int mScore;
-	int mLives;
+	int mScore;// holds the player score
+	int mLives;// holds the lives of the player
 
 	Texture* mShip;// create a texture for player
 
@@ -45,13 +46,13 @@ public:
 	void Visible(bool visible);// Sets player visible to true or false
 	bool IsAnimating();// Find out if player is animating or not
 
-	int Score();
-	int Lives();
+	int Score();// returns the player score
+	int Lives();// returns the lives
 
-	void AddScore(int change);
+	void AddScore(int change);// adds up the score
 
 	void WasHit();// Called by the level whenever there is a collision between the bullet and the player
-	void Update();
+	void Update();// in charge of animating, movement and firing bullets
 	void Render();//Called to render the texture to the screen
 };
 

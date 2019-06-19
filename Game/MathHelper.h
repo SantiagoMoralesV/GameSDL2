@@ -103,31 +103,7 @@ inline Vector2 RotateVector(Vector2& vec, float angle) {
 	const Vector2 VEC2_UP = { 0.0f, 1.0f };
 	const Vector2 VEC2_RIGHT = { 1.0f, 0.0f };
 
-	struct BezierCurve {
 
-		Vector2 p0;// start point
-		Vector2 p1;// control for start point
-		Vector2 p2;// control end point
-		Vector2 p3;// end point
-
-		// Point in the curve in relation to t so when t is 0 we get our start point
-		Vector2 CalculateCurvePoint(float t) {
-
-			float tt = t * t;
-			float ttt = tt * t;
-			float u = 1.0f - t;
-			float uu = u * u;
-			float uuu = uu * u;
-
-			Vector2 point = (uuu * p0) + (3 * uu * t * p1) + (3 * u * tt * p2) + (ttt * p3);
-
-			point.x = round(point.x);
-			point.y = round(point.y);
-
-			return point;
-
-		}
-	};
 
 
 #endif
